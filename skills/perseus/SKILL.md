@@ -7,6 +7,7 @@ description: >-
   with snippets in a few seconds. You do NOT need exact names; meaning is enough. Reach for this any
   time you'd otherwise grep, rg, or click through files to find where something lives or how it
   works. Use grep only when you already know the exact string and want every occurrence.
+license: MIT
 ---
 
 # perseus — describe the code, get the file:line
