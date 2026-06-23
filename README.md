@@ -7,9 +7,9 @@ An [agent skill](https://www.skills.sh/) for **plain-English code search** with
 ## Install
 
 ```bash
-npx skills add HACKE-RC/perseus-skill
+npx skills add efficientsystemsinc/perseus-skill
 # or
-gh skill install HACKE-RC/perseus-skill perseus
+gh skill install efficientsystemsinc/perseus-skill perseus
 ```
 
 ## What's in it
