@@ -34,6 +34,21 @@ perseus query --no-summary --json "auth enforcement on the login route" | jq '.h
   hit means confidence, a tight cluster means several plausible spots (check more than one).
   Negative scores are normal — the signal is the gap, not the sign.
 
+## `perseus research` — one wider query across several linked questions
+
+When one query is too narrow — you're mapping a whole flow or subsystem, not one spot — ask 2-8
+related questions at once and get a single cross-referenced answer: per-question hits plus the
+load-bearing files and symbol-graph links that tie them together, in a dependency-ordered reading
+list.
+
+```bash
+perseus research "where is auth enforced" "where are sessions created" "how logout clears state"
+```
+
+- `--files-only` → just the reading list as `path:line`; `--json` → the full packet; `-k` → hits
+  per question. Use `research` for "explain how X works end to end"; plain `query` for a single
+  "where is Y".
+
 ## Phrase the query as a terse noun-phrase of *discriminating* words
 
 1. **Lead with the rarest, most structural noun** (`registry`, `reducer`, `tokenizer`,
@@ -77,3 +92,38 @@ perseus watch            # auto-reindex as you edit (preferred during active wor
   file to edit *before* reading the tree.
 - **grep/rg** — you already know the exact symbol/string and want every occurrence (rename, count,
   mechanical sweep), or perseus errored (fall through to rg).
+
+## `perseus impact` — understand a thing once you know its name
+
+`query` finds *where* code lives; **impact** tells you what a named thing *does to the rest of the
+codebase*. Give it a symbol (or file) and it walks the symbol graph for callers, the tests that
+cover it, obligations, risk, and a verification order — so you understand something before you
+touch it.
+
+```bash
+perseus impact build_search_index          # one symbol
+perseus impact src/planner.py              # or a whole file
+perseus impact submit_query resolve_index  # several at once
+```
+
+Static — keyed on the name you give, not on any change.
+
+## `perseus eval` — see how YOUR changes ripple through the chain
+
+**eval** is impact aimed at your git **diff** instead of a name. It reads what you changed, maps
+those edited lines to the symbols they touch, and reports what the changes put at risk: callers,
+the tests you should run, and a verification order. The pre-commit / pre-PR "blast radius of my
+branch" check.
+
+```bash
+perseus eval                     # your uncommitted changes (worktree)
+perseus eval --diff main...HEAD  # everything on the branch vs main
+perseus eval --run-tests         # derive the affected tests AND run them (fails loud)
+```
+
+- No `--diff` = worktree edits on top of HEAD; `--diff <range>` scopes to a committed range.
+- Callers/tests come from the index, so re-index (or keep `perseus watch` on) before trusting an
+  eval after a signature change.
+
+Shared flags (impact + eval): `--print-tests` prints the derived test commands; `--run-tests` runs
+them and fails on a break; `--files-only` / `--json` for machine output.

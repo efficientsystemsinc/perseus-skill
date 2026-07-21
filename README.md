@@ -15,7 +15,9 @@ gh skill install efficientsystemsinc/perseus-skill perseus
 ## What's in it
 
 - `skills/perseus/SKILL.md` — when to reach for perseus over grep, how to phrase queries for a high
-  hit rate, how to read the JSON results, and how to keep the index fresh.
+  hit rate, how to read the JSON results, and how to keep the index fresh. Also covers the wider
+  verbs: `research` (several linked questions at once), `impact` (what a named symbol affects), and
+  `eval` (the blast radius of your git diff).
 
 ## License
 
